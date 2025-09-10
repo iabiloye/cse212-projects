@@ -54,7 +54,8 @@
     /// </summary>
     /// <param name="value">Integer value to add to the queue</param>
     private void Enqueue(int value) {
-        _queue.Insert(0, value);
+        /// This will add to the back of the queue
+        _queue.Add(value);
     }
 
     /// <summary>
@@ -66,8 +67,9 @@
         if (_queue.Count <= 0)
             throw new IndexOutOfRangeException();
 
-        var value = _queue[1];
-        _queue.RemoveAt(1);
+        /// This will remove and return from the front of the queue
+        var value = _queue[0];
+        _queue.RemoveAt(0);
         return value;
     }
 }
