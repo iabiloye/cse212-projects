@@ -6,24 +6,42 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 public class PriorityQueueTests
 {
     [TestMethod]
-    // Scenario: 
-    // Expected Result: 
+    // Scenario: Enqueue several words with different priorities, then dequeue.
+    // Expected Result: Dequeue returns the word with the highest priority.
     // Defect(s) Found: 
-    public void TestPriorityQueue_1()
+    public void TestPriorityQueue_HighestPriorityWord()
     {
         var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+        priorityQueue.Enqueue("noun", 1);
+        priorityQueue.Enqueue("verb", 3);
+        priorityQueue.Enqueue("adverb", 2);
+        Assert.AreEqual("verb", priorityQueue.Dequeue());
     }
 
     [TestMethod]
-    // Scenario: 
-    // Expected Result: 
+    // Scenario: Enqueue multiple words with the same highest priority.
+    // Expected Result: Dequeue returns the first word with the highest priority (FIFO).
     // Defect(s) Found: 
-    public void TestPriorityQueue_2()
+    public void TestPriorityQueue_FIFOSamePriorityWord()
     {
         var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+        priorityQueue.Enqueue("pronoun", 5);
+        priorityQueue.Enqueue("adverb", 5);
+        priorityQueue.Enqueue("noun", 3);
+        Assert.AreEqual("pronoun", priorityQueue.Dequeue());
+        Assert.AreEqual("adverb", priorityQueue.Dequeue());
     }
 
-    // Add more test cases as needed below.
+    [TestMethod]
+    // Scenario: Dequeue from an empty queue.
+    // Expected Result: Throws InvalidOperationException with message "The queue is empty."
+    // Defect(s) Found: None
+    public void TestPriorityQueue_EmptyQueue()
+    {
+        var priorityQueue = new PriorityQueue();
+        var ex = Assert.ThrowsException<InvalidOperationException>(() => priorityQueue.Dequeue());
+        Assert.AreEqual("The queue is empty.", ex.Message);
+    }
+
+    
 }
