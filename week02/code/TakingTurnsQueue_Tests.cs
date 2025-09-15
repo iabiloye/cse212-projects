@@ -10,9 +10,9 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3) and
     // run until the queue is empty
-    // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: None ( It passes with the correct finite-turn handling )
-    // Test passes. The queue correctly handles finite repetition.
+    // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim = Correct
+    // Defect(s) Found: None ( The queue correctly handles finite repetition correctly, and the order matches the expected result.)
+    // Test passes without issues.
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -44,7 +44,8 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3)
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
-    // Defect(s) Found: 
+    // Defect(s) Found: When a new player (George) was added midway, the queue does'nt correctly place him in the proper sequence.
+    // where the output was Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim, George, George, George which does'nt align with the expected result.
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -86,7 +87,8 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: None (The defect with infinite turns is not triggered by this test.)
+    // Defect(s) Found: The implementation incorrectly infinite zero into a very large finite number, 
+    // which literally fails the concept of true infinity.
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -117,7 +119,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: The implementation incorrectly infinite negative into a very large finite number, and this breaks the requirement.
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -144,7 +146,7 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Try to get the next person from an empty queue
     // Expected Result: Exception should be thrown with appropriate error message.
-    // Defect(s) Found: None. (The code correctly throws InvalidOperationException with the expected output.)
+    // Defect(s) Found: None. Test Passes as expected.
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();
