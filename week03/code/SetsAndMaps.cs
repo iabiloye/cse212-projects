@@ -19,11 +19,29 @@ public static class SetsAndMaps
     /// that there were no duplicates) and therefore should not be returned.
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
-    public static string[] FindPairs(string[] words)
+public static string[] FindPairs(string[] words)
+{
+    var set = new HashSet<string>(words);
+    var result = new List<string>();
+
+    foreach (var word in words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        /// This should skip special case like "aa"
+        if (word[0] == word[1]) continue;
+
+        var reversed = new string(new[] { word[1], word[0] });
+
+        if (set.Contains(reversed))
+        {
+            result.Add($"{word} & {reversed}");
+            set.Remove(word);     /// to prevent duplicates
+            set.Remove(reversed); // to avoid "am & ma" or if & fi twice
+        }
     }
+
+    return result.ToArray();
+}
+
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
@@ -42,7 +60,17 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+             if (fields.Length < 4) continue; /// malformed lines skip
+
+        var degree = fields[3].Trim();
+
+        if (!string.IsNullOrEmpty(degree))
+        {
+            if (degrees.ContainsKey(degree))
+                degrees[degree]++;
+            else
+                degrees[degree] = 1;
+        }
         }
 
         return degrees;
@@ -65,10 +93,44 @@ public static class SetsAndMaps
     /// using the [] notation.
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
+{
+    /// Helper to clean up the words: remove spaces + lowercase
+    string Clean(string s) => new string(
+        s.Where(char.IsLetterOrDigit) 
+         /// keep only letters/numbers
+         .Select(char.ToLower)
+         .ToArray()
+    );
+
+    var w1 = Clean(word1);
+    var w2 = Clean(word2);
+
+    if (w1.Length != w2.Length) return false;
+
+    var dict = new Dictionary<char, int>();
+
+    /// Count characters in word1
+    foreach (var c in w1)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        if (dict.ContainsKey(c))
+            dict[c]++;
+        else
+            dict[c] = 1;
     }
+    /// Subtract counts using word2
+    foreach (var c in w2)
+    {
+        if (!dict.ContainsKey(c)) return false;
+            /// letter not found
+            dict[c]--;
+
+        if (dict[c] == 0)
+            dict.Remove(c);
+    }
+    /// If dictionary is empty then all counts matched
+    return dict.Count == 0;
+}
+
 
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
@@ -99,8 +161,20 @@ public static class SetsAndMaps
         // TODO Problem 5:
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
-        // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
+        // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.if (featureCollection?.Features == null) 
+         if (featureCollection?.Features == null)
+            return Array.Empty<string>();
+
+        var result = featureCollection.Features
+        .Where(f => f.Properties != null)
+        .Select(f =>
+        {
+            var place = f.Properties.Place ?? "Unknown location";
+            var mag = f.Properties.Mag.HasValue ? f.Properties.Mag.Value.ToString("0.##") : "N/A";
+            return $"{place} - Mag {mag}";
+        })
+        .ToArray();
         // 3. Return an array of these string descriptions.
-        return [];
+        return result;
     }
 }
