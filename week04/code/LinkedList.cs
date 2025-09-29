@@ -44,9 +44,9 @@ public class LinkedList : IEnumerable<int>
         // if the list is not empty
         else
         {
-            newNode.Prev = _tail; // this will connect the node to the previous tail
-            _tail.Next = newNode; // Connect the previous tail to the new node
-            _tail = newNode; // while this connect the tail to point to the new node
+            newNode.Prev = _tail; /// this will connect the node to the previous tail
+            _tail.Next = newNode; /// Connect the previous tail to the new node
+            _tail = newNode; /// while this connect the tail to point to the new node
         }
     }
 
@@ -86,8 +86,8 @@ public class LinkedList : IEnumerable<int>
         }
         else if (_tail is not null)
         {
-            _tail.Prev!.Next = null; // discotinue the old one 
-            _tail = _tail.Prev; // Update on tail to point to the second last node
+            _tail.Prev!.Next = null; /// discotinue the old one 
+            _tail = _tail.Prev; /// Update on tail to point to the second last node
         }
     }
 
