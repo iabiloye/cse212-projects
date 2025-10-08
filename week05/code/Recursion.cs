@@ -169,10 +169,11 @@ public static class Recursion
         // to initialize the currPath list.
         if (currPath == null)
         {
-            currPath = new List<ValueTuple<int, int>>();
+            currPath = new List<(int, int)>();
         }
 
-        // currPath.Add((1,2)); // Use this syntax to add to the current path
+         currPath.Add((1,2));
+        // Use this syntax to add to the current path
 
         // TODO Start Problem 5
         /// maze solver using recursion
@@ -189,12 +190,12 @@ public static class Recursion
         {
             int newX = x + dx[i];
             int newY = y + dy[i];
-            ///if (maze.IsValidMove(newX, newY, currPath)) not getting this right 
+        if (maze.IsValidMove(currPath, newX, newY))
             {
                 SolveMaze(results, maze, newX, newY, currPath);
             }
         }
-        results.Add(currPath.AsString());
+        currPath.RemoveAt(currPath.Count - 1);
 
         // results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
     }
