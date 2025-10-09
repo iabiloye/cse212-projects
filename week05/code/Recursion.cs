@@ -177,8 +177,7 @@ public static class Recursion
 
         // TODO Start Problem 5
         /// maze solver using recursion
-        // ADD CODE HERE
-        if (maze.IsEnd(x, y)) ;
+        if (maze.IsEnd(x, y))
         {
             results.Add(currPath.AsString());
             currPath.RemoveAt(currPath.Count - 1);
